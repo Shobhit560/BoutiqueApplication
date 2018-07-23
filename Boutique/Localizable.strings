@@ -1,0 +1,60 @@
+/* 
+  Localizable.strings
+  Nexa
+
+  Created by VIPUL on 10/01/17.
+  Copyright © 2017 Adglobal360. All rights reserved.
+*/
+
+"app_name" = "Nexa";
+"alertForRegistrationPassword" = "Please enter Registration or Mobile Number";
+"alertForOneSelection" = "Please enter Either Registration or Mobile Number only";
+"alertForEmptyPassword" = "Please enter Password";
+"alertForEmptyUserId" = "Please enter User ID";
+"alertForEmptyEmailPassword" = "Please enter Email ID and Password";
+"alertForNetwork" = "Please check your internet connection.";
+"alertForNoDataFound" = "No data found";
+"alertForEmptyLandingPageUrl" = "Please Enter Landing Page Url...";
+"signUp" = "Thank you for registering on N-Pad. Your user id and password sent to email id.";
+"AddNewFollow" = "Thank you for your comments.";
+"Logout" = "You have  logged out successfully";
+"underDevelopment" = "This feature is Under Development";
+"logout_conf" = "Are you sure you want to logout ?";
+"back_home" = "Are you sure you want to go home screen ?";
+"warning_unApproved" = "Any unauthorized fitments to the vehicle may lead to void in warranty with on road safety and performance concerns.";
+"odoMeterValidation" = "Please enter Odometer reading";
+"serviceType" = "Please select Service type";
+"sub_serviceType" = "Please select valid Service Type";
+"gateInTime" = "Please select Gate in date/time";
+"rfID" = "Please enter RFID tag number ";
+"mobileNumber" = " Please enter Mobile no.1";
+"email" = "Please enter Email ID";
+"ValidateMobile" = "Please enter valid Mobile Number";
+"ValidateMobile2" = "Please enter valid Mobile Number 2";
+"ValidateEmail"  = "Please enter Valid Email ID";
+//Button Title
+"cancel" = "Cancel";
+"ok" = "OK";
+"apply" = "APPLY";
+"no" = "NO";
+"yes" = "YES";
+"retry" = "Retry";
+
+// Left Menu Items
+"home" = "Home";
+"leftSettings" = "Settings";
+"rateThisApp" = "Rate this app";
+"shareThisApp" = "Share this app";
+"logout" = "Logout";
+
+
+//MARK:- DashBoard Items
+"str_appointment" = "My Appointments";
+"str_Allappointment" = "All Appointments";
+"str_notification" = "My Notifications";
+"str_myJobcard"  = "My Jobcards";
+"str_AllJobcard"  = "All Jobcards";
+"str_myCalls" = "My Calls";
+"str_AllCalls" = "All Calls";
+"str_vechileHistory" = "Vehicle History";
+"str_jobsForToday" = "Tasks For Today";

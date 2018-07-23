@@ -1,0 +1,42 @@
+PODS:
+  - Alamofire (4.7.2)
+  - CryptoSwift (0.10.0)
+  - IQKeyboardManagerSwift (6.0.4)
+  - MBProgressHUD (1.0.0)
+  - NHRangeSlider (0.2)
+  - SDWebImage (4.4.1):
+    - SDWebImage/Core (= 4.4.1)
+  - SDWebImage/Core (4.4.1)
+  - SwiftKeychainWrapper (3.0.1)
+
+DEPENDENCIES:
+  - Alamofire (~> 4.7)
+  - CryptoSwift
+  - IQKeyboardManagerSwift
+  - MBProgressHUD (~> 1.0.0)
+  - NHRangeSlider (~> 0.2)
+  - SDWebImage (~> 4.0)
+  - SwiftKeychainWrapper
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - CryptoSwift
+    - IQKeyboardManagerSwift
+    - MBProgressHUD
+    - NHRangeSlider
+    - SDWebImage
+    - SwiftKeychainWrapper
+
+SPEC CHECKSUMS:
+  Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
+  CryptoSwift: 6c778d69282bed3b4e975ff97a79d074f20bb011
+  IQKeyboardManagerSwift: 36dbe324b4f9793f5f41ba5227f3e7c76dfefd50
+  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  NHRangeSlider: 2ef13d34bd7d48fcdedcde71c018c093992add7d
+  SDWebImage: 47e9b5b925cbce75946c23f0c42dd19464189af4
+  SwiftKeychainWrapper: 38952a3636320ae61bad3513cadd870929de7a4a
+
+PODFILE CHECKSUM: 2c43bef0aaa611ff40b61d179069f2b04a8c570e
+
+COCOAPODS: 1.5.3
