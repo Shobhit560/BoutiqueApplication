@@ -29,6 +29,7 @@ let kbaseURLDev =  "https://www.mypropertyboutique.com/"
 let kHomeBuyer = "mpbapi/home-buyer"
 let kleadCapture = "mpbapi/lead-capture"
 let kUpload = "assets/uploads/leadcapture"
+let crmIntegration = "http://stagingagldashboard.adv8.co/webforms/save-Data/"
 
 let colorGreen = UIColor(red: 129.0/255.0, green: 183.0/255.0, blue: 34.0/255.0, alpha: 1.0)
 let colorRed = UIColor(red: 218.0/255.0, green: 37.0/255.0, blue: 28.0/255.0, alpha: 1.0)

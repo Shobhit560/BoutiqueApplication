@@ -6,33 +6,49 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Boutique/ViewController.swift"
-            timestampString = "553783373.772669"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "67"
-            endingLineNumber = "67"
-            landmarkName = "imagePickerController(_:didFinishPickingMediaWithInfo:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Boutique/RegistrationVC.swift"
-            timestampString = "553783373.773301"
+            timestampString = "554036956.0583431"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "195"
-            endingLineNumber = "195"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "636"
+            endingLineNumber = "636"
+            landmarkName = "methodToUploadImageOnServer()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (Alamofire.DataResponse&lt;Swift.String&gt;) -&gt; () in closure #2 (Alamofire.SessionManager.MultipartFormDataEncodingResult) -&gt; () in Boutique.RegistrationVC.methodToUploadImageOnServer() -&gt; ()"
+                  moduleName = "Boutique"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/shobhitsaxena/iCloud%20Drive%20(Archive)/Documents/ShobhitCode/AGL/Boutique/Boutique/RegistrationVC.swift"
+                  timestampString = "554036394.77625"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "630"
+                  endingLineNumber = "630"
+                  offsetFromSymbolStart = "24">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in closure #2 (Alamofire.DataResponse&lt;Swift.String&gt;) -&gt; () in closure #2 (Alamofire.SessionManager.MultipartFormDataEncodingResult) -&gt; () in Boutique.RegistrationVC.methodToUploadImageOnServer() -&gt; ()"
+                  moduleName = "Boutique"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/shobhitsaxena/iCloud%20Drive%20(Archive)/Documents/ShobhitCode/AGL/Boutique/Boutique/RegistrationVC.swift"
+                  timestampString = "554036394.778937"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "631"
+                  endingLineNumber = "631"
+                  offsetFromSymbolStart = "20">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

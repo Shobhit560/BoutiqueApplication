@@ -58,7 +58,7 @@ class ViewController: UIViewController,UINavigationControllerDelegate, UIImagePi
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         imgCamera.image = info[UIImagePickerControllerOriginalImage] as? UIImage
-        imgCamera.cornerRadius = 60.0
+        imgCamera.cornerRadius = 44.0
         let fileManager = FileManager.default
         do {
             let documentDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create:false)

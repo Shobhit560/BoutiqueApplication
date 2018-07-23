@@ -522,9 +522,9 @@
 			baseConfigurationReference = 8E6B0F0EF1E7E880A112A332 /* Pods-Boutique.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: ADGLOBAL360 INDIA PRIVATE LIMITED";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3ZGUA65UR6;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/CryptoSwift\"",
@@ -539,10 +539,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.adglobal360.enterprise;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adglobal360.enterpriseHere;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f547ceda-f1a2-4fed-85a9-43d526f472e4";
-				PROVISIONING_PROFILE_SPECIFIER = Enterprise_APNS_Dist;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
@@ -553,9 +553,9 @@
 			baseConfigurationReference = A24DDCE41297276BD0419A66 /* Pods-Boutique.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: ADGLOBAL360 INDIA PRIVATE LIMITED";
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3ZGUA65UR6;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/CryptoSwift\"",
@@ -570,10 +570,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.adglobal360.enterprise;
+				PRODUCT_BUNDLE_IDENTIFIER = com.adglobal360.enterpriseHere;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f547ceda-f1a2-4fed-85a9-43d526f472e4";
-				PROVISIONING_PROFILE_SPECIFIER = Enterprise_APNS_Dist;
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 2;
 			};

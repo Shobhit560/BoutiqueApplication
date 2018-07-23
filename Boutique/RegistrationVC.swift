@@ -199,10 +199,8 @@ class RegistrationVC: UIViewController,UIPopoverPresentationControllerDelegate,C
                         }
                         if ((response as! NSDictionary).value(forKey: "Status")) as! Int == 1{
                             self.dictBroucherList = (response as! NSDictionary)
-                            if self.userImage.imageAsset != nil{
-                                self.methodToUploadImageOnServer()
-                            }else{
-                                self.showSuccessAlert(message: "Data Uploaded Succesfully")
+                            DispatchQueue.main.async {
+                                self.pushDetailWebServiceLeadGenerate()
                             }
                         }else{
                             self.showSuccessAlert(message: "Data Uploaded Succesfully")
@@ -223,6 +221,71 @@ class RegistrationVC: UIViewController,UIPopoverPresentationControllerDelegate,C
             }
         }else{
             self.showCustomAlertViewOkButton(titleName:"Please Enter Following Details", message: missingField)
+        }
+    }
+    func pushDetailWebServiceLeadGenerate(){
+        let (missingField, isValidated) = validateForm()
+        if isValidated {
+            println_debug("Post data")
+            if AppHelper.isConnectedToNetwork() {
+                DispatchQueue.main.async {
+                    AppHelper.showActivityUsingMBProgressHUD(uiView: self.view, message: "Updating Leads...")
+                }
+                
+                var pName = ""
+                var pMobile = ""
+                var pEmail = ""
+                var pIndustry = ""
+                var pCompany = ""
+                var pLocation = ""
+                
+                
+                if (txtName.text?.count)! > 0{
+                    pName = txtName.text!
+                }
+                if (txtMobile.text?.count)! > 0{
+                    pMobile = txtMobile.text!
+                }
+                if (txtEmail.text?.count)! > 0{
+                    pEmail = txtEmail.text!
+                }
+                if (txtIndustry.text?.count)! > 0{
+                    pIndustry = txtIndustry.text!
+                }
+                if (txtCompany.text?.count)! > 0{
+                    pCompany = txtCompany.text!
+                }
+                if (txtCLocation.text?.count)! > 0{
+                    pLocation = txtCLocation.text!
+                }
+                let params = "client_id=465&webformId=1236&webform_type=self&name=\(pName)&mobile=\(pMobile)&email=\(pEmail)&age=\(age)&occupation_industry=\(pIndustry)& annual_income=\(annualIncome)&company_name=\(pCompany)&current_location=\(pLocation)&investment_end_use=test&how_find_us=\(findStr)&budget=\(budgetStr)&images=\((pName).trimmingCharacters(in: .whitespaces)).jpeg"
+                ServicesClass.sharedInstance.makePostRequest(path: crmIntegration , params: params ) { (type: ServicesClass.ResponseType, response: AnyObject?) in
+                    if response == nil
+                    {
+                        DispatchQueue.main.async {
+                            AppHelper.hideActivityIndicator_MBProgressHUD(view: self.view)
+                        }
+                        if self.userImage.imageAsset != nil{
+                            self.methodToUploadImageOnServer()
+                        }else{
+                            self.showSuccessAlert(message: "Data Uploaded Succesfully")
+                        }
+                    }else{
+                        DispatchQueue.main.async {
+                            AppHelper.hideActivityIndicator_MBProgressHUD(view: self.view)
+                        }
+                        self.showErrorAlert(message: AlertMessages.alertForNoDataFound.description)
+                    }
+                }
+            }
+            else
+            {
+                DispatchQueue.main.async {
+                    self.showAlertViewOkButton(message: AlertMessages.alertForNetwork.description)
+                }
+            }
+        }else{
+            self.showCustomAlertViewOkButton(titleName:"Some Error Occured", message: missingField)
         }
     }
     func showErrorAlert(message: String){
@@ -547,7 +610,9 @@ class RegistrationVC: UIViewController,UIPopoverPresentationControllerDelegate,C
         guard let data = UIImageJPEGRepresentation(userImage, 0.9) else {
             return
         }
-        
+        DispatchQueue.main.async {
+            AppHelper.showActivityUsingMBProgressHUD(uiView: self.view, message: "Uploading Selfie")
+        }
         Alamofire.upload(multipartFormData: { (form) in
             form.append(data, withName: "leadcapture", fileName: self.userImageName, mimeType: "image/jpg")
         }, to: "https://www.mypropertyboutique.com/assets/uploads/leadcapture/", encodingCompletion: { result in
@@ -564,9 +629,16 @@ class RegistrationVC: UIViewController,UIPopoverPresentationControllerDelegate,C
                 })
 
                 upload.responseString { response in
-//                    print(response.value)
+//                    DispatchQueue.main.async {
+//                        AppHelper.hideActivityIndicator_MBProgressHUD(view: self.view)
+//                    }
+//                    self.showSuccessAlert(message: "Data Uploaded Succesfully")
                 }
             case .failure(let encodingError):
+                DispatchQueue.main.async {
+                    AppHelper.hideActivityIndicator_MBProgressHUD(view: self.view)
+                }
+                self.showSuccessAlert(message: "Data Uploaded Succesfully")
                 print(encodingError)
             }
         })
