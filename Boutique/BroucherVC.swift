@@ -50,7 +50,10 @@ class BroucherVC: UIViewController {
             let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
             let getImagePath = NSString.path(withComponents: [paths, imgName])
             imgCamera.image = UIImage.init(contentsOfFile: getImagePath)
-            imgCamera.cornerRadius = imgCamera.frame.size.height/2
+            imgCamera.layer.cornerRadius = imgCamera.frame.size.height/2
+//            imgCamera.cornerRadius = imgCamera.frame.size.height/2
+//            imgCamera.clipsToBounds = true
+//            imgCamera.layer.masksToBounds = false
         }else{
             imgCamera.image = #imageLiteral(resourceName: "camera")
         }

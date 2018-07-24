@@ -123,7 +123,7 @@ class ViewController: UIViewController,UINavigationControllerDelegate, UIImagePi
                 viewVC.userImageName = self.imgName
                 //For Page update
                 self.imgCamera.image = #imageLiteral(resourceName: "camera")
-                self.imgCamera.cornerRadius = self.imgCamera.frame.size.height
+                self.imgCamera.cornerRadius = 0
             }
             self.navigationController?.pushViewController(viewVC, animated: true)
         }
