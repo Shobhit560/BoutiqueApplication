@@ -11,9 +11,6 @@ import MBProgressHUD
 import CryptoSwift
 
 class AppHelper: NSObject {
-    
-    //MARK:- UserDefault saving keys
-    
     // save to user default
     class func saveToUserDefault (value: AnyObject? , key: String!) {
         let defaults = UserDefaults.standard

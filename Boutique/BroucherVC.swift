@@ -17,6 +17,7 @@ class BroucherVC: UIViewController {
     var userName = ""
     var dict = NSDictionary()
     
+    
     @IBOutlet weak var cityOne: UILabel!
     @IBOutlet weak var cityTwo: UILabel!
     @IBOutlet weak var cityThree: UILabel!
@@ -35,6 +36,8 @@ class BroucherVC: UIViewController {
     @IBOutlet weak var viewBoutiqueBottom: UIView!
     
     
+    var imgName = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -42,17 +45,17 @@ class BroucherVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         
         btnUserName.setTitle(userName, for: .normal)
-            
-//        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
-//        let getImagePath = NSString.path(withComponents: [paths, "userImage"])
-//        imgCamera.image = UIImage.init(contentsOfFile: getImagePath)
-        imgCamera.sd_setImage(with: URL(string: (String(describing: dict.value(forKey: "UserProfile")!))), placeholderImage: #imageLiteral(resourceName: "camera"))
-//        imgCamera.cornerRadius = 60.0
-    
+        
+        if imgName != ""{
+            let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+            let getImagePath = NSString.path(withComponents: [paths, imgName])
+            imgCamera.image = UIImage.init(contentsOfFile: getImagePath)
+            imgCamera.cornerRadius = imgCamera.frame.size.height/2
+        }else{
+            imgCamera.image = #imageLiteral(resourceName: "camera")
+        }
         lblUserId.text = "USER ID : \(String(describing: dict.value(forKey: "UserId")!))"
         btnUserName.setTitle(String(describing: dict.value(forKey: "UserName")!), for: .normal)
-        
-        
         
         txtData.text = String(describing: dict.value(forKey: "WelcomeText")!)
         
@@ -67,10 +70,6 @@ class BroucherVC: UIViewController {
         phoneOne.setTitle(((dict.value(forKey: "PropertyContact") as! NSArray).object(at: 0) as! String), for: .normal)
         phoneTwo.setTitle(((dict.value(forKey: "PropertyContact") as! NSArray).object(at: 1) as! String), for: .normal)
         phoneThree.setTitle(((dict.value(forKey: "PropertyContact") as! NSArray).object(at: 2) as! String), for: .normal)
-        
-//        phoneOne.text = ((dict.value(forKey: "PropertyContact") as! NSArray).object(at: 0) as! String)
-//        phoneTwo.text = ((dict.value(forKey: "PropertyContact") as! NSArray).object(at: 1) as! String)
-//        phoneThree.text = ((dict.value(forKey: "PropertyContact") as! NSArray).object(at: 2) as! String)
         
         lblProperties.text = String(describing: (dict.value(forKey: "PropertyInformation") as! NSArray).object(at: 0)) + "+"
         lblAddedProperty.text = String(describing: (dict.value(forKey: "PropertyInformation") as! NSArray).object(at: 1)) + " Properties"

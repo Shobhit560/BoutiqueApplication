@@ -3,7 +3,6 @@ PODS:
   - CryptoSwift (0.10.0)
   - IQKeyboardManagerSwift (6.0.4)
   - MBProgressHUD (1.0.0)
-  - NHRangeSlider (0.2)
   - SDWebImage (4.4.1):
     - SDWebImage/Core (= 4.4.1)
   - SDWebImage/Core (4.4.1)
@@ -14,7 +13,6 @@ DEPENDENCIES:
   - CryptoSwift
   - IQKeyboardManagerSwift
   - MBProgressHUD (~> 1.0.0)
-  - NHRangeSlider (~> 0.2)
   - SDWebImage (~> 4.0)
   - SwiftKeychainWrapper
 
@@ -24,7 +22,6 @@ SPEC REPOS:
     - CryptoSwift
     - IQKeyboardManagerSwift
     - MBProgressHUD
-    - NHRangeSlider
     - SDWebImage
     - SwiftKeychainWrapper
 
@@ -33,10 +30,9 @@ SPEC CHECKSUMS:
   CryptoSwift: 6c778d69282bed3b4e975ff97a79d074f20bb011
   IQKeyboardManagerSwift: 36dbe324b4f9793f5f41ba5227f3e7c76dfefd50
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
-  NHRangeSlider: 2ef13d34bd7d48fcdedcde71c018c093992add7d
   SDWebImage: 47e9b5b925cbce75946c23f0c42dd19464189af4
   SwiftKeychainWrapper: 38952a3636320ae61bad3513cadd870929de7a4a
 
-PODFILE CHECKSUM: 2c43bef0aaa611ff40b61d179069f2b04a8c570e
+PODFILE CHECKSUM: 500f4191589ec5422333b8315a16da6d673d8890
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.5.2

@@ -76,12 +76,10 @@ class RegistrationVC: UIViewController,UIPopoverPresentationControllerDelegate,C
     }
 
     override func viewDidAppear(_ animated: Bool) {
-//        txtName.text = "Shobhit"
-//        txtMobile.text = "9540867766"
-//        txtEmail.text = "shobhitsaxena001@gmail.com"
-//        findStr = "Shobhit Saxena"
-        
-        
+        txtName.text = "Shobhit"
+        txtMobile.text = "9540867766"
+        txtEmail.text = "shobhitsaxena001@gmail.com"
+        findStr = "Shobhit Saxena"
         
         viewFirst.addDashedBorder()
         viewSecond.addDashedBorder()
@@ -307,6 +305,9 @@ class RegistrationVC: UIViewController,UIPopoverPresentationControllerDelegate,C
                     let viewVC = ControllerFetcher().broucherVC
                     viewVC.userName = self.txtName.text!
                     viewVC.dict = self.dictBroucherList
+                    if self.userImage.imageAsset != nil{
+                        viewVC.imgName = self.userImageName
+                    }
                     self.navigationController?.pushViewController(viewVC, animated: true)
                 }
             }
@@ -342,9 +343,10 @@ class RegistrationVC: UIViewController,UIPopoverPresentationControllerDelegate,C
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if textField == txtMobile{
             guard let text = textField.text else { return true }
-            let newLength = text.characters.count + string.characters.count - range.length
+            let newLength = text.count + string.characters.count - range.length
             return newLength <= 10
         }
+        
         return true
     }
      func isValidEmail(testStr:String) -> Bool {
@@ -607,41 +609,93 @@ class RegistrationVC: UIViewController,UIPopoverPresentationControllerDelegate,C
     }
     func methodToUploadImageOnServer(){
         
-        guard let data = UIImageJPEGRepresentation(userImage, 0.9) else {
-            return
-        }
+//        guard let data = UIImageJPEGRepresentation(userImage, 0.9) else {
+//            return
+//        }
+//        guard let data = UIImagePNGRepresentation(userImage) else {
+//            return
+//        }
+//        let image = #imageLiteral(resourceName: "designation")
+//        let data = UIImagePNGRepresentation(image)!
+        
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
+        let getImagePath = NSString.path(withComponents: [paths, userImageName])
+        let image = UIImage.init(contentsOfFile: getImagePath)
+        let data = UIImagePNGRepresentation(image!)!
+        
+////        let data = image!.jpeg(.highest)!
+//
+//
+//
+//        guard let data = UIImageJPEGRepresentation(image!, 0.5) else {
+//            return
+//        }
+
+//        let image = UIImage.init(named: "main_bg")
+//        let data = UIImagePNGRepresentation(image!)!
+        
         DispatchQueue.main.async {
             AppHelper.showActivityUsingMBProgressHUD(uiView: self.view, message: "Uploading Selfie")
         }
-        Alamofire.upload(multipartFormData: { (form) in
-            form.append(data, withName: "leadcapture", fileName: self.userImageName, mimeType: "image/jpg")
-        }, to: "https://www.mypropertyboutique.com/assets/uploads/leadcapture/", encodingCompletion: { result in
-            switch result {
-            case .success(let upload, _, _):
-                upload.uploadProgress(closure: { (progress) in
-                    print("Upload Progress: \(progress.fractionCompleted)")
-                    if progress.fractionCompleted == 1.0{
-                        DispatchQueue.main.async {
-                            AppHelper.hideActivityIndicator_MBProgressHUD(view: self.view)
-                        }
-                        self.showSuccessAlert(message: "Data Uploaded Succesfully")
-                    }
-                })
-
-                upload.responseString { response in
-//                    DispatchQueue.main.async {
-//                        AppHelper.hideActivityIndicator_MBProgressHUD(view: self.view)
-//                    }
-//                    self.showSuccessAlert(message: "Data Uploaded Succesfully")
-                }
-            case .failure(let encodingError):
-                DispatchQueue.main.async {
-                    AppHelper.hideActivityIndicator_MBProgressHUD(view: self.view)
-                }
-                self.showSuccessAlert(message: "Data Uploaded Succesfully")
-                print(encodingError)
-            }
+        let apiHeaders = [
+            "Content-Type": "multipart/form-data",
+            "Accept" : "application/json"
+        ]
+        
+        Alamofire.upload(multipartFormData:{ multipartFormData in
+            multipartFormData.append(data, withName: "LeadImg", fileName: self.userImageName, mimeType: "image/jpg")},
+                         usingThreshold:UInt64.init(),
+                         to:"https://www.mypropertyboutique.com/mpbapi/lead-image",
+                         method:.post,
+                         headers:apiHeaders,
+                         encodingCompletion: { encodingResult in
+                            switch encodingResult {
+                            case .success(let upload, _, _):
+                                upload.responseJSON { response in
+                                    debugPrint(response)
+                                    DispatchQueue.main.async {
+                                        AppHelper.hideActivityIndicator_MBProgressHUD(view: self.view)
+                                    }
+                                    self.showSuccessAlert(message: "Data Uploaded Succesfully")
+                                }
+                            case .failure(let encodingError):
+                                print(encodingError)
+                                DispatchQueue.main.async {
+                                    AppHelper.hideActivityIndicator_MBProgressHUD(view: self.view)
+                                }
+                                self.showSuccessAlert(message: "Data Uploaded Succesfully")
+                            }
         })
+        
+        
+//        Alamofire.upload(multipartFormData: { (form) in
+//            form.append(data, withName: "LeadImg", fileName: self.userImageName, mimeType: "image/jpg")
+//        }, to: "https://www.mypropertyboutique.com/mpbapi/lead-image", encodingCompletion: { result in
+//            switch result {
+//            case .success(let upload, _, _):
+//                upload.uploadProgress(closure: { (progress) in
+//                    print("Upload Progress: \(progress.fractionCompleted)")
+//                    if progress.fractionCompleted == 1.0{
+//                        DispatchQueue.main.async {
+//                            AppHelper.hideActivityIndicator_MBProgressHUD(view: self.view)
+//                        }
+//                        self.showSuccessAlert(message: "Data Uploaded Succesfully")
+//                    }
+//                })
+//                upload.responseString { response in
+////                    DispatchQueue.main.async {
+////                        AppHelper.hideActivityIndicator_MBProgressHUD(view: self.view)
+////                    }
+////                    self.showSuccessAlert(message: "Data Uploaded Succesfully")
+//                }
+//            case .failure(let encodingError):
+//                DispatchQueue.main.async {
+//                    AppHelper.hideActivityIndicator_MBProgressHUD(view: self.view)
+//                }
+//                self.showSuccessAlert(message: "Data Uploaded Succesfully")
+//                print(encodingError)
+//            }
+//        })
         
         
         
@@ -704,3 +758,102 @@ extension String {
         return components(separatedBy: .whitespaces).joined()
     }
 }
+extension UIImage {
+    
+    enum CompressImageErrors: Error {
+        case invalidExSize
+        case sizeImpossibleToReach
+    }
+    func compressImage(_ expectedSizeKb: Int, completion : (UIImage,CGFloat) -> Void ) throws {
+        let minimalCompressRate :CGFloat = 0.4 // min compressRate to be checked later
+        if expectedSizeKb == 0 {
+            throw CompressImageErrors.invalidExSize // if the size is equal to zero throws
+        }
+        let expectedSizeBytes = expectedSizeKb * 1024
+        let imageToBeHandled: UIImage = self
+        var actualHeight : CGFloat = self.size.height
+        var actualWidth : CGFloat = self.size.width
+        var maxHeight : CGFloat = 841 //A4 default size I'm thinking about a document
+        var maxWidth : CGFloat = 594
+        var imgRatio : CGFloat = actualWidth/actualHeight
+        let maxRatio : CGFloat = maxWidth/maxHeight
+        var compressionQuality : CGFloat = 1
+        var imageData:Data = UIImageJPEGRepresentation(imageToBeHandled, compressionQuality)!
+        while imageData.count > expectedSizeBytes {
+            
+            if (actualHeight > maxHeight || actualWidth > maxWidth){
+                if(imgRatio < maxRatio){
+                    imgRatio = maxHeight / actualHeight;
+                    actualWidth = imgRatio * actualWidth;
+                    actualHeight = maxHeight;
+                }
+                else if(imgRatio > maxRatio){
+                    imgRatio = maxWidth / actualWidth;
+                    actualHeight = imgRatio * actualHeight;
+                    actualWidth = maxWidth;
+                }
+                else{
+                    actualHeight = maxHeight;
+                    actualWidth = maxWidth;
+                    compressionQuality = 1;
+                }
+            }
+            let rect = CGRect(x: 0.0, y: 0.0, width: actualWidth, height: actualHeight)
+            UIGraphicsBeginImageContext(rect.size);
+            imageToBeHandled.draw(in: rect)
+            let img = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+            if let imgData = UIImageJPEGRepresentation(img!, compressionQuality) {
+                if imgData.count > expectedSizeBytes {
+                    if compressionQuality > minimalCompressRate {
+                        compressionQuality -= 0.1
+                    } else {
+                        maxHeight = maxHeight * 0.9
+                        maxWidth = maxWidth * 0.9
+                    }
+                }
+                imageData = imgData
+            }
+        }
+        completion(UIImage(data: imageData)!, compressionQuality)
+    }
+}
+//extension UIImage {
+//    enum JPEGQuality: CGFloat {
+//        case lowest  = 0
+//        case low     = 0.25
+//        case medium  = 0.5
+//        case high    = 0.75
+//        case highest = 1
+//    }
+//    
+//    /// Returns the data for the specified image in JPEG format.
+//    /// If the image object’s underlying image data has been purged, calling this function forces that data to be reloaded into memory.
+//    /// - returns: A data object containing the JPEG data, or nil if there was a problem generating the data. This function may return nil if the image has no data or if the underlying CGImageRef contains data in an unsupported bitmap format.
+//    func jpeg(_ quality: JPEGQuality) -> UIImage? {
+//        return UIImageJPEGRepresentation(self, quality.rawValue)
+//    }
+//    func compressTo(_ expectedSizeInMb:Int) -> Data? {
+//        let sizeInBytes = expectedSizeInMb * 1024 * 1024
+//        var needCompress:Bool = true
+//        var imgData:Data?
+//        var compressingValue:CGFloat = 1.0
+//        while (needCompress && compressingValue > 0.0) {
+//            if let data:Data = UIImageJPEGRepresentation(self, compressingValue) {
+//                if data.count < sizeInBytes {
+//                    needCompress = false
+//                    imgData = data
+//                } else {
+//                    compressingValue -= 0.1
+//                }
+//            }
+//        }
+//        
+//        if let data = imgData {
+//            if (data.count < sizeInBytes) {
+//                return  UIImage(data: data)
+//            }
+//        }
+//        return nil
+//    }
+//}

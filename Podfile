@@ -8,7 +8,7 @@ target 'Boutique' do
     pod 'MBProgressHUD', '~> 1.0.0'
     pod 'SwiftKeychainWrapper'
     pod 'CryptoSwift'
-    pod 'NHRangeSlider', '~> 0.2'
+#    pod 'NHRangeSlider', '~> 0.2'
     pod 'Alamofire', '~> 4.7'
     pod 'SDWebImage', '~> 4.0'
   # Pods for Boutique
