@@ -141,7 +141,7 @@ class RegistrationVC: UIViewController,UIPopoverPresentationControllerDelegate,C
             boolDataAvailable = false
         }
         if findStr == ""{
-            msg = msg + "\n" + "Wish to join us on Home Buying Tour"
+            msg = msg + "\n" + "How did you find us"
             boolDataAvailable = false
         }
         return (msg,boolDataAvailable)
