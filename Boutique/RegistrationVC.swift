@@ -76,10 +76,10 @@ class RegistrationVC: UIViewController,UIPopoverPresentationControllerDelegate,C
     }
 
     override func viewDidAppear(_ animated: Bool) {
-//        txtName.text = "Shobhit"
-//        txtMobile.text = "9540867766"
-//        txtEmail.text = "shobhitsaxena001@gmail.com"
-//        findStr = "Shobhit Saxena"
+        txtName.text = "Shobhit"
+        txtMobile.text = "9540867766"
+        txtEmail.text = "shobhitsaxena001@gmail.com"
+        findStr = "Shobhit Saxena"
         
         viewFirst.addDashedBorder()
         viewSecond.addDashedBorder()
@@ -186,8 +186,6 @@ class RegistrationVC: UIViewController,UIPopoverPresentationControllerDelegate,C
                 if (txtCLocation.text?.count)! > 0{
                     pLocation = txtCLocation.text!
                 }
-
-
                 let params = "name=\(pName)&mobile=\(pMobile)&email=\(pEmail)&age=\(age)&occupation_industry=\(pIndustry)& annual_income=\(annualIncome)&company_name=\(pCompany)&current_location=\(pLocation)&investment_end_use=test&how_find_us=\(findStr)&budget=\(budgetStr)&images=\((pName).trimmingCharacters(in: .whitespaces)).jpeg"
                ServicesClass.sharedInstance.makePostRequest(path: ServiceUrls.baseURL.description+kleadCapture , params: params ) { (type: ServicesClass.ResponseType, response: AnyObject?) in
                     if response != nil
@@ -229,14 +227,12 @@ class RegistrationVC: UIViewController,UIPopoverPresentationControllerDelegate,C
                 DispatchQueue.main.async {
                     AppHelper.showActivityUsingMBProgressHUD(uiView: self.view, message: "Updating Leads...")
                 }
-                
                 var pName = ""
                 var pMobile = ""
                 var pEmail = ""
                 var pIndustry = ""
                 var pCompany = ""
                 var pLocation = ""
-                
                 
                 if (txtName.text?.count)! > 0{
                     pName = txtName.text!
@@ -334,7 +330,7 @@ class RegistrationVC: UIViewController,UIPopoverPresentationControllerDelegate,C
             }
         }
         if textField == txtMobile{
-            if !(isValidPhone(value: textField.text!)){
+            if !(isValidPhone(value: textField.text!)) || ((textField.text?.count)! < 10) {
                 txtMobile.text = ""
                 self.showErrorAlert(message: "Please enter valid Mobile Number")
             }
@@ -342,15 +338,31 @@ class RegistrationVC: UIViewController,UIPopoverPresentationControllerDelegate,C
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if textField == txtMobile{
-            guard let text = textField.text else { return true }
-            let newLength = text.count + string.characters.count - range.length
-            return newLength <= 10
+            let set = CharacterSet(charactersIn: "0123456789")
+            if(txtMobile.text?.rangeOfCharacter(from: set.inverted) != nil ){
+                print("Character")
+                txtMobile.text?.removeLast()
+                return false
+            }else{
+                print("Number")
+                guard let text = textField.text else { return true }
+                let newLength = text.count + string.count - range.length
+                return newLength <= 10
+            }
         }
-        
+        else if textField == txtName{
+            let set = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ ")
+            if(txtName.text?.rangeOfCharacter(from: set.inverted) != nil ){
+                print("Number")
+                txtName.text?.removeLast()
+                return false
+            }else{
+                print("Character")
+            }
+        }
         return true
     }
      func isValidEmail(testStr:String) -> Bool {
-        
         let emailRegEx = "[A-Z0-9a-z_%+-]+@[A-Za-z0-9-]+\\.[A-Za-z]{2,4}"
         let whiteSpace = " "
         if let hasWhiteSpace = testStr.range(of: whiteSpace) {

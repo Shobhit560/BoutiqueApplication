@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Boutique/BroucherVC.swift"
-            timestampString = "554107530.226133"
+            filePath = "Boutique/RegistrationVC.swift"
+            timestampString = "554369600.861236"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "49"
-            endingLineNumber = "49"
-            landmarkName = "viewWillAppear(_:)"
+            startingLineNumber = "393"
+            endingLineNumber = "393"
+            landmarkName = "btnWish(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

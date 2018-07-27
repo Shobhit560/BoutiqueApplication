@@ -12,12 +12,8 @@ class BroucherVC: UIViewController {
 
     @IBOutlet weak var imgCamera: UIImageView!
     @IBOutlet weak var lblUserId: UILabel!
-    @IBOutlet weak var btnUserName: UIButton!
     @IBOutlet weak var txtData: UILabel!
-    var userName = ""
-    var dict = NSDictionary()
-    
-    
+    @IBOutlet var lblUserName: UILabel!
     @IBOutlet weak var cityOne: UILabel!
     @IBOutlet weak var cityTwo: UILabel!
     @IBOutlet weak var cityThree: UILabel!
@@ -30,12 +26,11 @@ class BroucherVC: UIViewController {
     @IBOutlet weak var lblProperties: UILabel!
     @IBOutlet weak var lblAddedProperty: UILabel!
     @IBOutlet weak var lblBuilder: UILabel!
-    @IBOutlet weak var lblURL: UILabel!
-    
     @IBOutlet weak var viewBoutiqueTop: UIView!
     @IBOutlet weak var viewBoutiqueBottom: UIView!
     
-    
+    var userName = ""
+    var dict = NSDictionary()
     var imgName = ""
     
     override func viewDidLoad() {
@@ -43,9 +38,8 @@ class BroucherVC: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        
-        btnUserName.setTitle(userName, for: .normal)
-        
+//        btnUserName.setTitle(userName, for: .normal)
+        lblUserName.text = userName
         if imgName != ""{
             let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
             let getImagePath = NSString.path(withComponents: [paths, imgName])
@@ -58,7 +52,8 @@ class BroucherVC: UIViewController {
             imgCamera.image = #imageLiteral(resourceName: "camera")
         }
         lblUserId.text = "USER ID : \(String(describing: dict.value(forKey: "UserId")!))"
-        btnUserName.setTitle(String(describing: dict.value(forKey: "UserName")!), for: .normal)
+        lblUserName.text = dict.value(forKey: "UserName")! as? String
+//        btnUserName.setTitle(String(describing: dict.value(forKey: "UserName")!), for: .normal)
         
         txtData.text = String(describing: dict.value(forKey: "WelcomeText")!)
         
