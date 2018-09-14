@@ -7,126 +7,206 @@
 //
 
 import UIKit
-import AVFoundation
-import Photos
 
-class ViewController: UIViewController,UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+var dictDataFlow = NSMutableDictionary()
+var dictApplicationArray = NSMutableDictionary()
+var selectedExpoID = 0
 
-    @IBOutlet weak var imgCamera: UIImageView!
-    var imgName = ""
+@available(iOS 10.0, *)
+@available(iOS 10.0, *)
+class ViewController: UIViewController,ClassPopUpVCDelegate,UIPopoverPresentationControllerDelegate {
+    
+    @IBOutlet var imgArrow1: UIImageView!
+    @IBOutlet var imgArrow2: UIImageView!
+    @IBOutlet var lblExpo: UILabel!
+    @IBOutlet var lblExecutive: UILabel!
+    
     var isImageCaptured = false
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        imgCamera.image = #imageLiteral(resourceName: "camera")
-        // Do any additional setup after loading the view, typically from a nib.
+        self.fetchDetailWebService()
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        
+        if dictDataFlow.count == 0{
+            lblExpo.text = "Select Expo Center"
+            lblExecutive.text = "Executive Name"
+        }
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-
-    @IBAction func btnTakeSelfie(_ sender: UIButton) {
-        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.actionSheet)
-        actionSheet.addAction(UIAlertAction(title: "Camera", style: UIAlertActionStyle.default, handler: { (alert:UIAlertAction!) -> Void in
-            if AVCaptureDevice.authorizationStatus(for: AVMediaType.video) ==  AVAuthorizationStatus.authorized{
-                self.openCameraAfterAccessGrantedByUser()
-            } else{
-                DispatchQueue.main.async { [unowned self] in
-                    AVCaptureDevice.requestAccess(for: AVMediaType.video, completionHandler: { (granted :Bool) -> Void in
-                        if granted == true {
-                            // User granted
-                            self.openCameraAfterAccessGrantedByUser()
-                        }
-                        else{
-                            // User Rejected
-                            self.alertToEncourageCameraAccessWhenApplicationStarts()
-                        }
-                    });
-                }
-            }
-        }))
-        actionSheet.addAction(UIAlertAction(title: "Gallery", style: UIAlertActionStyle.default, handler: { (alert:UIAlertAction!) -> Void in
-            self.photoLibrary()
-        }))
-        actionSheet.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil))
-        actionSheet.popoverPresentationController?.permittedArrowDirections = .up
-        actionSheet.popoverPresentationController?.sourceView = sender as UIView
-        actionSheet.popoverPresentationController?.sourceRect = CGRect(x:sender.bounds.midX, y:sender.bounds.midY+20 , width:0.0, height: 0.0)
-        actionSheet.popoverPresentationController?.backgroundColor = UIColor.white
-        self.present(actionSheet, animated: true, completion: nil)
-    }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        imgCamera.image = info[UIImagePickerControllerOriginalImage] as? UIImage
-        imgCamera.cornerRadius = 49.0
-        let fileManager = FileManager.default
-        do {
-            let documentDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor:nil, create:false)
-            imgName = Date().toString(dateFormat: "ddMMYYYY_HHmm") + "image.png"
-            let fileURL = documentDirectory.appendingPathComponent(imgName)
-            let image = imgCamera.image
-            if let imageData = UIImageJPEGRepresentation(image!, 0.5) {
-                try imageData.write(to: fileURL)
-            }
-        } catch {
-            print(error)
+    func validateForm() -> (String,Bool){
+        var msg = ""
+        var boolDataAvailable = true
+        if (dictDataFlow.value(forKey: "key_Expo") == nil){
+            msg =  msg + "\n" + "Expo Center"
+            boolDataAvailable = false
         }
-        isImageCaptured = true
-        self.dismiss(animated: false, completion: nil)
-    }
-    
-    func openCameraAfterAccessGrantedByUser()
-    {
-        if(UIImagePickerController .isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)){
-            let myPickerController = UIImagePickerController()
-            myPickerController.delegate = self;
-            myPickerController.sourceType = UIImagePickerControllerSourceType.camera
-            self.present(myPickerController, animated: true, completion: nil)
+        if (dictDataFlow.value(forKey: "key_Executive") == nil){
+            msg = msg + "\n" + "Executive Name"
+            boolDataAvailable = false
         }
+        return (msg,boolDataAvailable)
     }
-    
-    //Show Camera Unavailable Alert
-    
-    func alertToEncourageCameraAccessWhenApplicationStarts()
-    {
-        let cameraUnavailableAlertController = UIAlertController (title: Constants.app_name.rawValue, message: "True Value wants to access phone camera", preferredStyle: .alert)
-        let settingsAction = UIAlertAction(title: "Settings", style: .destructive) { (_) -> Void in
-            let settingsUrl = URL(string:UIApplicationOpenSettingsURLString)
-            if let url = settingsUrl {
-                DispatchQueue.main.async {
-                    UIApplication.shared.openURL(url)
-                }
-            }
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
-        cameraUnavailableAlertController .addAction(settingsAction)
-        cameraUnavailableAlertController .addAction(cancelAction)
-        self.present(cameraUnavailableAlertController , animated: true, completion: nil)
-    }
-    
-    func photoLibrary() {
-        let myPickerController = UIImagePickerController()
-        myPickerController.delegate = self;
-        myPickerController.sourceType = UIImagePickerControllerSourceType.photoLibrary
-        self.present(myPickerController, animated: true, completion: nil)
-    }
-
-    @IBAction func btnRegistration(_ sender: Any) {
-        DispatchQueue.main.async {
+    @IBAction func btnRegistration(_ sender: UIButton) {
+        let (missingField, isValidated) = validateForm()
+        if isValidated { DispatchQueue.main.async {
+//            let viewVC = ControllerFetcher().cameraVC
             let viewVC = ControllerFetcher().registrationVC
-            if self.isImageCaptured == true{
-                viewVC.userImage = self.imgCamera.image!
-                viewVC.userImageName = self.imgName
-                //For Page update
-                self.imgCamera.image = #imageLiteral(resourceName: "camera")
-                self.imgCamera.cornerRadius = 0
-            }
             self.navigationController?.pushViewController(viewVC, animated: true)
+            }
+        }else{
+            self.showCustomAlertViewOkButton(titleName:"Please add the following details", message: missingField)
         }
+    }
+    func fetchDetailWebService(){
+        if AppHelper.isConnectedToNetwork() {
+            DispatchQueue.main.async {
+                AppHelper.showActivityUsingMBProgressHUD(uiView: self.view, message: "Please Wait \n Loading some data")
+            }
+            ServicesClass.sharedInstance.makeGetRequest(path: ServiceUrls.baseURL.description+kHomeBuyer) { (type: ServicesClass.ResponseType, response: AnyObject?) in
+                if response != nil
+                {
+                    DispatchQueue.main.async {
+                        AppHelper.hideActivityIndicator_MBProgressHUD(view: self.view)
+                    }
+                    
+                    if let arr = (((response as! NSDictionary).object(forKey: "wishTo") != nil) ? ((response as! NSDictionary).value(forKey: "wishTo")! as? NSArray) : [])
+                    {
+                        dictApplicationArray.setValue(arr, forKey: "arrWish")
+
+                    }
+                    if let arr = (((response as! NSDictionary).object(forKey: "howDid") != nil) ? ((response as! NSDictionary).value(forKey: "howDid")! as? NSArray) : [])
+                    {
+                        dictApplicationArray.setValue(arr, forKey: "arrFind")
+                        
+                    }
+                    if let arr = (((response as! NSDictionary).object(forKey: "locations") != nil) ? ((response as! NSDictionary).value(forKey: "locations")! as? NSArray) : [])
+                    {
+                        dictApplicationArray.setValue(arr, forKey: "arrLoc")
+                        
+                    }
+                    if let arr = (((response as! NSDictionary).object(forKey: "ExecutiveName") != nil) ? ((response as! NSDictionary).value(forKey: "ExecutiveName")! as? NSArray) : [])
+                    {
+                        dictApplicationArray.setValue(arr, forKey: "arrExecutive")
+                        
+                    }
+                    if let arr = (((response as! NSDictionary).object(forKey: "ExpoCenter") != nil) ? ((response as! NSDictionary).value(forKey: "ExpoCenter")! as? NSArray) : [])
+                    {
+                        dictApplicationArray.setValue(arr, forKey: "arrExpo")
+                        
+                    }
+                    if let arr = (((response as! NSDictionary).object(forKey: "budget") != nil) ? ((response as! NSDictionary).value(forKey: "budget")! as? NSArray) : [])
+                    {
+                        dictApplicationArray.setValue(arr, forKey: "arrBudget")
+                        
+                    }
+                    if let arr = (((response as! NSDictionary).object(forKey: "Industry") != nil) ? ((response as! NSDictionary).value(forKey: "Industry")! as? NSArray) : [])
+                    {
+                        dictApplicationArray.setValue(arr, forKey: "arrIndus")
+                    }
+                }
+                else {
+                    DispatchQueue.main.async {
+                        AppHelper.hideActivityIndicator_MBProgressHUD(view: self.view)
+                    }
+                    self.showErrorAlert(message: AlertMessages.alertForNoDataFound.description)
+                }
+            }
+        }
+        else
+        {
+            DispatchQueue.main.async {
+                self.showAlertViewOkButton(message: AlertMessages.alertForNetwork.description)
+            }
+        }
+    }
+    func showErrorAlert(message: String){
+        DispatchQueue.main.async {
+            let alertController = UIAlertController(title: Constants.app_name.rawValue, message: message, preferredStyle: .alert)
+            let OkAction = UIAlertAction(title: ButtonTitle.ok.description, style: .default) { (action:
+                UIAlertAction) in
+            }
+            alertController.addAction(OkAction)
+            self.present(alertController, animated: true, completion:nil)
+        }
+    }
+    @IBAction func btnPop(_ sender: UIButton) {
+        if (dictApplicationArray.count == 0) || (dictApplicationArray.value(forKey: "arrExpo") as! NSArray).count == 0 || (dictApplicationArray.value(forKey: "arrExecutive") as! NSArray).count == 0{
+            self.fetchDetailWebService()
+        }else{
+            var arrPopUp = NSArray()
+            var comingPageID = 1
+            var str = ""
+            switch sender.tag {
+            case 1:
+                arrPopUp = dictApplicationArray.value(forKey: "arrExpo") as! NSArray
+                comingPageID = 1
+                if (dictDataFlow.value(forKey: "key_Expo") != nil){
+                    str = dictDataFlow.value(forKey: "key_Expo")  as! String
+                }
+                imgArrow1.image = #imageLiteral(resourceName: "white-Up")
+            case 2:
+                if dictDataFlow.value(forKey: "key_Expo") == nil{
+                    return
+                }
+                arrPopUp = (dictApplicationArray.value(forKey: "arrExecutive") as! NSArray)[selectedExpoID] as! NSArray
+                comingPageID = 2
+                if (dictDataFlow.value(forKey: "key_Executive") != nil){
+                    str = dictDataFlow.value(forKey: "key_Executive")  as! String
+                }
+                imgArrow2.image = #imageLiteral(resourceName: "white-Up")
+            default:
+                print("Nothing to do")
+            }
+            
+            DispatchQueue.main.async {
+                let popOverController = ControllerFetcher().popVC
+                popOverController.modalPresentationStyle = UIModalPresentationStyle.popover
+                popOverController.preferredContentSize = CGSize(width:(sender as UIView).frame.width, height: 300)
+                popOverController.isModalInPopover = true
+                popOverController.delegatePop = self
+                popOverController.pageArray = arrPopUp
+                popOverController.pageId = comingPageID
+                popOverController.selectedItem = comingPageID == 1 ? str : (str.components(separatedBy: "$#$"))[0]  //str
+                popOverController.view.backgroundColor = UIColor.black.withAlphaComponent(0.1)
+                popOverController.popoverPresentationController?.permittedArrowDirections = .up
+                popOverController.popoverPresentationController?.delegate = self
+                popOverController.popoverPresentationController?.sourceView = sender as UIView
+                popOverController.popoverPresentationController?.sourceRect = CGRect(x:sender.bounds.midX, y:sender.bounds.midY+30 , width:0.0, height: 0.0)
+                self.present(popOverController, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func btnDoneClicked(str: String, index: Int, selectedRow:Int){
+        imgArrow1.image = #imageLiteral(resourceName: "white_Drop")
+        imgArrow2.image = #imageLiteral(resourceName: "white_Drop")
+        if index != 100{
+            switch index {
+            case 1:
+                lblExpo.text = str
+                dictDataFlow.removeObject(forKey: "key_Executive")
+                lblExecutive.text = "Executive Name"
+                selectedExpoID = selectedRow
+                dictDataFlow.removeObject(forKey: "key_Expo")
+                dictDataFlow.setValue(str, forKey: "key_Expo")
+            case 2:
+                lblExecutive.text = (str.components(separatedBy: "$#$"))[0]
+                dictDataFlow.removeObject(forKey: "key_Executive")
+                dictDataFlow.setValue(str, forKey: "key_Executive")
+            default:
+                println_debug("Nothing to print here")
+            }
+        }
+    }
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
     }
 }
 

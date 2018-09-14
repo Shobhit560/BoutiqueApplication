@@ -45,7 +45,7 @@ class ServicesClass: NSObject {
             var object:[String: AnyObject]
             do {
                 object = try JSONSerialization.jsonObject(with: result!, options: JSONSerialization.ReadingOptions.allowFragments) as! Dictionary
-                print(object)
+//                print(object)
                 onCompletion(ResponseType.kresponseTypeSuccess, object as AnyObject?)
             } catch let error1 as NSError {
                 onCompletion(ResponseType.kResponseTypeFail, nil)

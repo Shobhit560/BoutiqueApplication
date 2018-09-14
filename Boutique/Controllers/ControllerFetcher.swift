@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 
+@available(iOS 10.0, *)
+@available(iOS 10.0, *)
 class ControllerFetcher : NSObject{
     
 //  SplashVC
@@ -41,6 +43,18 @@ class ControllerFetcher : NSObject{
     lazy var popVC: PopUpVC = {
         let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
         var viewController = storyboard.instantiateViewController(withIdentifier: "PopUpVC_ID") as! PopUpVC
+        return viewController
+    }()
+    //  LocationVC
+    lazy var locationVC: LocationVCViewController = {
+        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        var viewController = storyboard.instantiateViewController(withIdentifier: "LocationVCViewController_ID") as! LocationVCViewController
+        return viewController
+    }()
+    //  CameraVC
+    lazy var cameraVC: CameraVC = {
+        let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
+        var viewController = storyboard.instantiateViewController(withIdentifier: "CameraVC_ID") as! CameraVC
         return viewController
     }()
 }

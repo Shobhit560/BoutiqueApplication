@@ -11,20 +11,18 @@ import Alamofire
 
 
 
+@available(iOS 10.0, *)
 class RegistrationVC: UIViewController,UIPopoverPresentationControllerDelegate,ClassPopUpVCDelegate,UITextFieldDelegate {
 
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet var txtName: UITextField!
     @IBOutlet var txtCompany: UITextField!
     @IBOutlet var txtMobile: UITextField!
-    @IBOutlet var txtDeignation: UITextField!
     @IBOutlet var txtEmail: UITextField!
-    @IBOutlet var txtCLocation: UITextField!
     @IBOutlet weak var txtIndustry: UITextField!
     @IBOutlet weak var txtFind: UITextField!
     @IBOutlet weak var txtBudget: UITextField!
     @IBOutlet weak var txtWish: UITextField!
-    @IBOutlet weak var txtInterestedLocation: UITextField!
     
     @IBOutlet var age_Img1: UIImageView!
     @IBOutlet var age_Img2: UIImageView!
@@ -42,89 +40,46 @@ class RegistrationVC: UIViewController,UIPopoverPresentationControllerDelegate,C
     @IBOutlet var property_Img2: UIImageView!
     @IBOutlet var property_Img3: UIImageView!
     
+    @IBOutlet var imgArrow0: UIImageView!
     @IBOutlet var imgArrow1: UIImageView!
     @IBOutlet var imgArrow2: UIImageView!
     @IBOutlet var imgArrow3: UIImageView!
-    @IBOutlet weak var imgArrow4: UIImageView!
-    
-    @IBOutlet var btnSubscribe: UIButton!
     
     @IBOutlet weak var viewFirst: UIView!
-    @IBOutlet weak var viewSecond: UIView!
-    
+
+    @IBOutlet var imgProfile: UIImageView!
     var boolSubscribe = false
     
-    var dictBroucherList = NSDictionary()
-    var wishArray = NSArray()
-    var findArray = NSArray()
-    var locationArray = NSArray()
-    var budgetArray = NSArray()
-    var userImage = UIImage()
-    var userImageName = ""
     var age = ""
     var propertyType = ""
     var annualIncome = ""
-    var wishStr = ""
-    var findStr = ""
-    var locStr = ""
-    var budgetStr = ""
     
+    var wishStr = ""
+    var indusStr = ""
+    var findStr = ""
+    var budgetStr = ""
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.fetchDetailWebService()
-        
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        txtName.text = "Shobhit"
-        txtMobile.text = "9540867766"
-        txtEmail.text = "shobhitsaxena001@gmail.com"
-        findStr = "Shobhit Saxena"
-        
+        imgProfile.image = dictDataFlow.value(forKey: "key_Image") as? UIImage
         viewFirst.addDashedBorder()
-        viewSecond.addDashedBorder()
+        dataTest()
     }
-    func fetchDetailWebService(){
-        if AppHelper.isConnectedToNetwork() {
-            DispatchQueue.main.async {
-                AppHelper.showActivityUsingMBProgressHUD(uiView: self.view, message: "Please Wait \n Loading some data")
-            }
-            ServicesClass.sharedInstance.makeGetRequest(path: ServiceUrls.baseURL.description+kHomeBuyer) { (type: ServicesClass.ResponseType, response: AnyObject?) in
-                if response != nil
-                {
-                    DispatchQueue.main.async {
-                        AppHelper.hideActivityIndicator_MBProgressHUD(view: self.view)
-                    }
-                    
-                    self.wishArray = ((response as! NSDictionary).object(forKey: "wishTo") != nil) ? ((response as! NSDictionary).value(forKey: "wishTo")! as! NSArray) : []
-                    
-                    self.findArray = ((response as! NSDictionary).object(forKey: "howDid") != nil) ? ((response as! NSDictionary).value(forKey: "howDid")! as! NSArray) : []
-                    
-                    self.locationArray = ((response as! NSDictionary).object(forKey: "locations") != nil) ? ((response as! NSDictionary).value(forKey: "locations")! as! NSArray) : []
-                    
-                    self.budgetArray = ["2 L - 20 L",
-                        "20 L - 40 L",
-                        "40 L - 50 L",
-                        "50 L - 1 Cr",
-                        "1 Cr - 5 Cr",
-                        "5 Cr - 10 Cr",
-                        "10 Cr+"]
-                }
-                else {
-                    DispatchQueue.main.async {
-                        AppHelper.hideActivityIndicator_MBProgressHUD(view: self.view)
-                    }
-                    self.showErrorAlert(message: AlertMessages.alertForNoDataFound.description)
-                }
-            }
-        }
-        else
-        {
-            DispatchQueue.main.async {
-                self.showAlertViewOkButton(message: AlertMessages.alertForNetwork.description)
-            }
-        }
+    
+
+    func dataTest(){
+        txtName.text = "Shobhit Saxena"
+        txtCompany.text = "AdGlobal360"
+        txtMobile.text = "9540867766"
+        txtIndustry.text = "Information Technology"
+        txtEmail.text = "shobhitsaxena001@gmail.com"
+        findStr = "paper Advertisement"
+        indusStr = ""
+        wishStr = "Yes"
+        budgetStr = "2 L - 20 L"
     }
+    
+    
     func validateForm() -> (String,Bool){
         var msg = ""
         var boolDataAvailable = true
@@ -146,142 +101,6 @@ class RegistrationVC: UIViewController,UIPopoverPresentationControllerDelegate,C
         }
         return (msg,boolDataAvailable)
     }
-    
-    func pushDetailWebService(){
-//        let viewVC = ControllerFetcher().broucherVC
-//        viewVC.userName = "Shobhit Saxena"
-//        self.navigationController?.pushViewController(viewVC, animated: true)
-        
-        
-        let (missingField, isValidated) = validateForm()
-        if isValidated {
-            println_debug("Post data")
-            if AppHelper.isConnectedToNetwork() {
-                DispatchQueue.main.async {
-                    AppHelper.showActivityUsingMBProgressHUD(uiView: self.view, message: "Updating Record...")
-                }
-
-                var pName = ""
-                var pMobile = ""
-                var pEmail = ""
-                var pIndustry = ""
-                var pCompany = ""
-                var pLocation = ""
-
-                if (txtName.text?.count)! > 0{
-                    pName = txtName.text!
-                }
-                if (txtMobile.text?.count)! > 0{
-                    pMobile = txtMobile.text!
-                }
-                if (txtEmail.text?.count)! > 0{
-                    pEmail = txtEmail.text!
-                }
-                if (txtIndustry.text?.count)! > 0{
-                    pIndustry = txtIndustry.text!
-                }
-                if (txtCompany.text?.count)! > 0{
-                    pCompany = txtCompany.text!
-                }
-                if (txtCLocation.text?.count)! > 0{
-                    pLocation = txtCLocation.text!
-                }
-                let params = "name=\(pName)&mobile=\(pMobile)&email=\(pEmail)&age=\(age)&occupation_industry=\(pIndustry)& annual_income=\(annualIncome)&company_name=\(pCompany)&current_location=\(pLocation)&investment_end_use=test&how_find_us=\(findStr)&budget=\(budgetStr)&images=\((pName).trimmingCharacters(in: .whitespaces)).jpeg"
-               ServicesClass.sharedInstance.makePostRequest(path: ServiceUrls.baseURL.description+kleadCapture , params: params ) { (type: ServicesClass.ResponseType, response: AnyObject?) in
-                    if response != nil
-                    {
-                        DispatchQueue.main.async {
-                            AppHelper.hideActivityIndicator_MBProgressHUD(view: self.view)
-                        }
-                        if ((response as! NSDictionary).value(forKey: "Status")) as! Int == 1{
-                            self.dictBroucherList = (response as! NSDictionary)
-                            DispatchQueue.main.async {
-                                self.pushDetailWebServiceLeadGenerate()
-                            }
-                        }else{
-                            self.showSuccessAlert(message: "Data Uploaded Succesfully")
-                        }
-                    }else{
-                        DispatchQueue.main.async {
-                            AppHelper.hideActivityIndicator_MBProgressHUD(view: self.view)
-                        }
-                        self.showErrorAlert(message: AlertMessages.alertForNoDataFound.description)
-                    }
-                }
-            }
-            else
-            {
-                DispatchQueue.main.async {
-                    self.showAlertViewOkButton(message: AlertMessages.alertForNetwork.description)
-                }
-            }
-        }else{
-            self.showCustomAlertViewOkButton(titleName:"Please Enter Following Details", message: missingField)
-        }
-    }
-    func pushDetailWebServiceLeadGenerate(){
-        let (missingField, isValidated) = validateForm()
-        if isValidated {
-            println_debug("Post data")
-            if AppHelper.isConnectedToNetwork() {
-                DispatchQueue.main.async {
-                    AppHelper.showActivityUsingMBProgressHUD(uiView: self.view, message: "Updating Leads...")
-                }
-                var pName = ""
-                var pMobile = ""
-                var pEmail = ""
-                var pIndustry = ""
-                var pCompany = ""
-                var pLocation = ""
-                
-                if (txtName.text?.count)! > 0{
-                    pName = txtName.text!
-                }
-                if (txtMobile.text?.count)! > 0{
-                    pMobile = txtMobile.text!
-                }
-                if (txtEmail.text?.count)! > 0{
-                    pEmail = txtEmail.text!
-                }
-                if (txtIndustry.text?.count)! > 0{
-                    pIndustry = txtIndustry.text!
-                }
-                if (txtCompany.text?.count)! > 0{
-                    pCompany = txtCompany.text!
-                }
-                if (txtCLocation.text?.count)! > 0{
-                    pLocation = txtCLocation.text!
-                }
-                let params = "client_id=465&webformId=1236&webform_type=self&name=\(pName)&mobile=\(pMobile)&email=\(pEmail)&age=\(age)&occupation_industry=\(pIndustry)& annual_income=\(annualIncome)&company_name=\(pCompany)&current_location=\(pLocation)&investment_end_use=test&how_find_us=\(findStr)&budget=\(budgetStr)&images=\((pName).trimmingCharacters(in: .whitespaces)).jpeg"
-                ServicesClass.sharedInstance.makePostRequest(path: crmIntegration , params: params ) { (type: ServicesClass.ResponseType, response: AnyObject?) in
-                    if response == nil
-                    {
-                        DispatchQueue.main.async {
-                            AppHelper.hideActivityIndicator_MBProgressHUD(view: self.view)
-                        }
-                        if self.userImage.imageAsset != nil{
-                            self.methodToUploadImageOnServer()
-                        }else{
-                            self.showSuccessAlert(message: "Data Uploaded Succesfully")
-                        }
-                    }else{
-                        DispatchQueue.main.async {
-                            AppHelper.hideActivityIndicator_MBProgressHUD(view: self.view)
-                        }
-                        self.showErrorAlert(message: AlertMessages.alertForNoDataFound.description)
-                    }
-                }
-            }
-            else
-            {
-                DispatchQueue.main.async {
-                    self.showAlertViewOkButton(message: AlertMessages.alertForNetwork.description)
-                }
-            }
-        }else{
-            self.showCustomAlertViewOkButton(titleName:"Some Error Occured", message: missingField)
-        }
-    }
     func showErrorAlert(message: String){
         DispatchQueue.main.async {
             let alertController = UIAlertController(title: Constants.app_name.rawValue, message: message, preferredStyle: .alert)
@@ -292,59 +111,60 @@ class RegistrationVC: UIViewController,UIPopoverPresentationControllerDelegate,C
             self.present(alertController, animated: true, completion:nil)
         }
     }
-    func showSuccessAlert(message: String){
-        DispatchQueue.main.async {
-            let alertController = UIAlertController(title: Constants.app_name.rawValue, message: message, preferredStyle: .alert)
-            let OkAction = UIAlertAction(title: ButtonTitle.ok.description, style: .default) { (action:
-                UIAlertAction) in
-                DispatchQueue.main.async {
-                    let viewVC = ControllerFetcher().broucherVC
-                    viewVC.userName = self.txtName.text!
-                    viewVC.dict = self.dictBroucherList
-                    if self.userImage.imageAsset != nil{
-                        viewVC.imgName = self.userImageName
-                    }
-                    self.navigationController?.pushViewController(viewVC, animated: true)
-                }
-            }
-            alertController.addAction(OkAction)
-            self.present(alertController, animated: true, completion:nil)
-        }
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
     @IBAction func btnRegisterationNow(_ sender: Any) {
-        self.pushDetailWebService()
+        let (missingField, isValidated) = validateForm()
+        if isValidated {
+            dictDataFlow.setValue(txtName.text, forKey: "key_Name")
+            dictDataFlow.setValue(txtCompany.text, forKey: "key_Company")
+            dictDataFlow.setValue(txtMobile.text, forKey: "key_Mobile")
+            dictDataFlow.setValue(txtEmail.text, forKey: "key_Mail")
+            dictDataFlow.setValue(txtFind.text, forKey: "key_Find")
+            dictDataFlow.setValue(txtIndustry.text, forKey: "key_Industry")
+            dictDataFlow.setValue(txtBudget.text, forKey: "key_Budget")
+            dictDataFlow.setValue(txtWish.text, forKey: "key_Wish")
+            dictDataFlow.setValue(age, forKey: "key_Age")
+            dictDataFlow.setValue(annualIncome, forKey: "key_AnIncome")
+            dictDataFlow.setValue(propertyType, forKey: "key_Property")
+            
+            DispatchQueue.main.async {
+                let viewVC = ControllerFetcher().locationVC
+                self.navigationController?.pushViewController(viewVC, animated: true)
+            }
+        }else{
+            self.showCustomAlertViewOkButton(titleName:"Please add the following details", message: missingField)
+        }
     }
    
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         if textField == txtEmail{
-            if !(isValidEmail(testStr: textField.text!)){
+            if !(AppHelper.isValidEmail(testStr: textField.text!)){
                 txtEmail.text = ""
                 self.showErrorAlert(message: "Please enter valid E-mail")
             }
         }
         if textField == txtMobile{
-            if !(isValidPhone(value: textField.text!)) || ((textField.text?.count)! < 10) {
+            if !(AppHelper.isValidPhone(value: textField.text!)) || ((textField.text?.count)! < 10) {
                 txtMobile.text = ""
                 self.showErrorAlert(message: "Please enter valid Mobile Number")
             }
         }
+        textField.resignFirstResponder()
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if textField == txtMobile{
             let set = CharacterSet(charactersIn: "0123456789")
             if(txtMobile.text?.rangeOfCharacter(from: set.inverted) != nil ){
-                print("Character")
+//                print("Character")
                 txtMobile.text?.removeLast()
                 return false
             }else{
-                print("Number")
+//                print("Number")
                 guard let text = textField.text else { return true }
                 let newLength = text.count + string.count - range.length
                 return newLength <= 10
@@ -353,115 +173,92 @@ class RegistrationVC: UIViewController,UIPopoverPresentationControllerDelegate,C
         else if textField == txtName{
             let set = CharacterSet(charactersIn: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ ")
             if(txtName.text?.rangeOfCharacter(from: set.inverted) != nil ){
-                print("Number")
+//                print("Number")
                 txtName.text?.removeLast()
                 return false
             }else{
-                print("Character")
+//                print("Character")
             }
         }
         return true
     }
-     func isValidEmail(testStr:String) -> Bool {
-        let emailRegEx = "[A-Z0-9a-z_%+-]+@[A-Za-z0-9-]+\\.[A-Za-z]{2,4}"
-        let whiteSpace = " "
-        if let hasWhiteSpace = testStr.range(of: whiteSpace) {
-            println_debug ("has whitespace==\(hasWhiteSpace)")
-            return false
-        } else {
-            println_debug("no whitespace")
-            let range = testStr.range(of: emailRegEx, options: .regularExpression, range: nil, locale: nil)
-            let result = range != nil ? true : false
-            return result
-        }
-    }
-    func isValidPhone(value: String) -> Bool
-    {
-        let charcter  = NSCharacterSet(charactersIn: "0123456789").inverted
-        var filtered:String!
-        let inputString:NSArray = value.components(separatedBy: charcter) as NSArray
-        filtered = inputString.componentsJoined(by: "")
-        return  value == filtered
-    }
+   
     @IBAction func btnWish(_ sender: UIButton) {
-        if wishArray.count == 0 || findArray.count == 0 || locationArray.count == 0{
-            self.fetchDetailWebService()
-        }else{
-            var arrPopUp = NSArray()
-            var comingPageID = 1
-            switch sender.tag {
-            case 1:
-                arrPopUp = findArray
-                comingPageID = 1
-                imgArrow1.image = #imageLiteral(resourceName: "arrow-up")
-            case 2:
-                arrPopUp = budgetArray
-                comingPageID = 2
-                imgArrow2.image = #imageLiteral(resourceName: "arrow-up")
-            case 3:
-                arrPopUp = wishArray
-                comingPageID = 3
-                imgArrow3.image = #imageLiteral(resourceName: "arrow-up")
-            case 4:
-                arrPopUp = locationArray
-                comingPageID = 4
-                imgArrow4.image = #imageLiteral(resourceName: "arrow-up")
-            default:
-                print("Nothing to do")
-            }
-            
-            DispatchQueue.main.async {
-                let popOverController = ControllerFetcher().popVC
-                popOverController.modalPresentationStyle = UIModalPresentationStyle.popover
-                popOverController.preferredContentSize = CGSize(width:(sender as UIView).frame.width, height:(comingPageID == 3 ? 180 : 300))
-                popOverController.isModalInPopover = true
-                popOverController.delegatePop = self
-                popOverController.pageArray = arrPopUp
-                popOverController.pageId = comingPageID
-                popOverController.view.backgroundColor = UIColor.black.withAlphaComponent(0.1)
-                popOverController.popoverPresentationController?.permittedArrowDirections = .up
-                popOverController.popoverPresentationController?.delegate = self
-                popOverController.popoverPresentationController?.sourceView = sender as UIView
-                popOverController.popoverPresentationController?.sourceRect = CGRect(x:sender.bounds.midX, y:sender.bounds.midY+30 , width:0.0, height: 0.0)
-                self.present(popOverController, animated: true, completion: nil)
-            }
+        txtName.resignFirstResponder()
+        txtCompany.resignFirstResponder()
+        txtMobile.resignFirstResponder()
+        txtEmail.resignFirstResponder()
+        var arrPopUp = NSArray()
+        var comingPageID = 1
+        var str = ""
+        switch sender.tag {
+        case 0:
+            arrPopUp = dictApplicationArray.value(forKey: "arrIndus") as! NSArray
+            comingPageID = 0
+            str = indusStr
+            imgArrow0.image = #imageLiteral(resourceName: "arrow-up")
+        case 1:
+            arrPopUp = dictApplicationArray.value(forKey: "arrFind") as! NSArray
+            comingPageID = 1
+            str = findStr
+            imgArrow1.image = #imageLiteral(resourceName: "arrow-up")
+        case 2:
+            arrPopUp = dictApplicationArray.value(forKey: "arrBudget") as! NSArray
+            str = budgetStr
+            comingPageID = 2
+            imgArrow2.image = #imageLiteral(resourceName: "arrow-up")
+        case 3:
+            arrPopUp = dictApplicationArray.value(forKey: "arrWish") as! NSArray
+            comingPageID = 3
+            str = wishStr
+            imgArrow3.image = #imageLiteral(resourceName: "arrow-up")
+        default:
+            print("Nothing to do")
+        }
+        
+        DispatchQueue.main.async {
+            let popOverController = ControllerFetcher().popVC
+            popOverController.modalPresentationStyle = UIModalPresentationStyle.popover
+            popOverController.preferredContentSize = CGSize(width:(sender as UIView).frame.width, height:(comingPageID == 3 ? 180 : 300))
+            popOverController.isModalInPopover = true
+            popOverController.delegatePop = self
+            popOverController.pageArray = arrPopUp
+            popOverController.pageId = comingPageID
+            popOverController.selectedItem = str
+            popOverController.view.backgroundColor = UIColor.black.withAlphaComponent(0.1)
+            popOverController.popoverPresentationController?.permittedArrowDirections = comingPageID > 1 ? .down : .up
+            popOverController.popoverPresentationController?.delegate = self
+            popOverController.popoverPresentationController?.sourceView = sender as UIView
+            popOverController.popoverPresentationController?.sourceRect = comingPageID > 1 ? CGRect(x:sender.bounds.midX, y:sender.bounds.midY-30 , width:0.0, height: 0.0) : CGRect(x:sender.bounds.midX, y:sender.bounds.midY+30 , width:0.0, height: 0.0)
+            self.present(popOverController, animated: true, completion: nil)
         }
     }
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         return .none
     }
     
-    @IBAction func btnSubscribe(_ sender: UIButton) {
-        if boolSubscribe == false{
-            boolSubscribe = true
-            btnSubscribe.setImage(#imageLiteral(resourceName: "checkbox_red"), for: .normal)
-        }else{
-            boolSubscribe = false
-            btnSubscribe.setImage(#imageLiteral(resourceName: "checkbox_empty"), for: .normal)
-        }
-    }
-    
-    func btnDoneClicked(str: String, index: Int){
+    func btnDoneClicked(str: String, index: Int, selectedRow:Int){
+        imgArrow0.image = #imageLiteral(resourceName: "sort-down")
         imgArrow1.image = #imageLiteral(resourceName: "sort-down")
         imgArrow2.image = #imageLiteral(resourceName: "sort-down")
         imgArrow3.image = #imageLiteral(resourceName: "sort-down")
-        imgArrow4.image = #imageLiteral(resourceName: "sort-down")
-        
-        switch index {
-        case 1:
-            findStr = str
-            txtFind.text = str
-        case 2:
-            budgetStr = str
-            txtBudget.text = str
-        case 3:
-            wishStr = str
-            txtWish.text = str
-        case 4:
-            locStr = str
-            txtInterestedLocation.text = str
-        default:
-            println_debug("Nothing to print here")
+        if index != 100{
+            switch index {
+            case 0:
+                indusStr = str
+                txtIndustry.text = str
+            case 1:
+                findStr = str
+                txtFind.text = str
+            case 2:
+                budgetStr = str
+                txtBudget.text = str
+            case 3:
+                wishStr = str
+                txtWish.text = str
+            default:
+                println_debug("Nothing to print here")
+            }
         }
     }
     
@@ -504,7 +301,7 @@ class RegistrationVC: UIViewController,UIPopoverPresentationControllerDelegate,C
             age_Img5.image = UIImage(named:"checkbox_grey")
         default:
             age = ""
-            print("Not Selected")
+//            print("Not Selected")
         }
     }
     
@@ -547,7 +344,7 @@ class RegistrationVC: UIViewController,UIPopoverPresentationControllerDelegate,C
             income_Img5.image = UIImage(named:"checkbox_grey")
         default:
             annualIncome = ""
-            print("Not Selected")
+//            print("Not Selected")
         }
     }
     
@@ -570,47 +367,16 @@ class RegistrationVC: UIViewController,UIPopoverPresentationControllerDelegate,C
             property_Img3.image = UIImage(named:"checkbox_grey")
         default:
             propertyType = ""
-            print("Not Selected")
+//            print("Not Selected")
         }
     }
-    func methodToUploadImageOnServer(){
-        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
-        let getImagePath = NSString.path(withComponents: [paths, userImageName])
-        let image = UIImage.init(contentsOfFile: getImagePath)
-        let data = UIImagePNGRepresentation(image!)!
-        
-        DispatchQueue.main.async {
-            AppHelper.showActivityUsingMBProgressHUD(uiView: self.view, message: "Uploading Selfie")
-        }
-        let apiHeaders = [
-            "Content-Type": "multipart/form-data",
-            "Accept" : "application/json"
-        ]
-        
-        Alamofire.upload(multipartFormData:{ multipartFormData in
-            multipartFormData.append(data, withName: "LeadImg", fileName: self.userImageName, mimeType: "image/jpg")},
-             usingThreshold:UInt64.init(),
-             to:"https://www.mypropertyboutique.com/mpbapi/lead-image",
-             method:.post,
-             headers:apiHeaders,
-             encodingCompletion: { encodingResult in
-                switch encodingResult {
-                case .success(let upload, _, _):
-                    upload.responseJSON { response in
-                        debugPrint(response)
-                        DispatchQueue.main.async {
-                            AppHelper.hideActivityIndicator_MBProgressHUD(view: self.view)
-                        }
-                        self.showSuccessAlert(message: "Data Uploaded Succesfully")
-                    }
-                case .failure(let encodingError):
-                    print(encodingError)
-                    DispatchQueue.main.async {
-                        AppHelper.hideActivityIndicator_MBProgressHUD(view: self.view)
-                    }
-                    self.showSuccessAlert(message: "Data Uploaded Succesfully")
+    @IBAction func btnBack(_ sender: UIButton) {
+        let viewControllers: [UIViewController] = self.navigationController!.viewControllers
+        for aViewController in viewControllers {
+                if aViewController is ViewController {
+                    self.navigationController!.popToViewController(aViewController, animated: true)
                 }
-        })
+        }
     }
 }
 extension Date {

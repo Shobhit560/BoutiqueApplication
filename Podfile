@@ -11,6 +11,8 @@ target 'Boutique' do
 #    pod 'NHRangeSlider', '~> 0.2'
     pod 'Alamofire', '~> 4.7'
     pod 'SDWebImage', '~> 4.0'
+    pod 'Fabric'
+    pod 'Crashlytics'
   # Pods for Boutique
 
 end

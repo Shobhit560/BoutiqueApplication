@@ -41,6 +41,27 @@ class AppHelper: NSObject {
         }
         return nil
     }
+    class func isValidEmail(testStr:String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z_%+-]+@[A-Za-z0-9-]+\\.[A-Za-z]{2,4}"
+        let whiteSpace = " "
+        if let hasWhiteSpace = testStr.range(of: whiteSpace) {
+            println_debug ("has whitespace==\(hasWhiteSpace)")
+            return false
+        } else {
+            println_debug("no whitespace")
+            let range = testStr.range(of: emailRegEx, options: .regularExpression, range: nil, locale: nil)
+            let result = range != nil ? true : false
+            return result
+        }
+    }
+    class func isValidPhone(value: String) -> Bool
+    {
+        let charcter  = NSCharacterSet(charactersIn: "0123456789").inverted
+        var filtered:String!
+        let inputString:NSArray = value.components(separatedBy: charcter) as NSArray
+        filtered = inputString.componentsJoined(by: "")
+        return  value == filtered
+    }
     struct UserInfo {
         var MobileNumber = ""
         var UserName = ""

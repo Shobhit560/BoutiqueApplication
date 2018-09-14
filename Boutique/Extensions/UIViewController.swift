@@ -23,7 +23,7 @@ extension UIViewController {
         
         let OKAction = UIAlertAction(title: ButtonTitle.ok.description, style: .default) { (action:
          UIAlertAction) in
-            print("You've pressed OK button",ButtonTitle.ok.description);
+//            print("You've pressed OK button",ButtonTitle.ok.description);
         }
         
         alertController.addAction(OKAction)
@@ -38,7 +38,7 @@ extension UIViewController {
         
         let OKAction = UIAlertAction(title: ButtonTitle.ok.description, style: .default) { (action:
             UIAlertAction) in
-            print("You've pressed OK button",ButtonTitle.ok.description);
+//            print("You've pressed OK button",ButtonTitle.ok.description);
         }
         
         alertController.addAction(OKAction)
@@ -54,7 +54,7 @@ extension UIViewController {
         
         let OKAction = UIAlertAction(title: ButtonTitle.ok.description, style: .default) { (action:
             UIAlertAction) in
-            print("You've pressed OK button",ButtonTitle.ok.description);
+//            print("You've pressed OK button",ButtonTitle.ok.description);
             onCompletion(ActionType.kActionTypeOK)
         }
         alertController.addAction(OKAction)
@@ -69,12 +69,12 @@ extension UIViewController {
         
         let OKAction = UIAlertAction(title: okButtonTitle, style: .default) { (action:
             UIAlertAction) in
-            print("You've pressed OK button",okButtonTitle);
+//            print("You've pressed OK button",okButtonTitle);
             onCompletion(ActionType.kActionTypeOK)
         }
         let CancleAction = UIAlertAction(title: CancelButtonTitle, style: .default) { (action:
             UIAlertAction) in
-            print("You've pressed OK button",CancelButtonTitle);
+//            print("You've pressed OK button",CancelButtonTitle);
             onCompletion(ActionType.kActionTypeCancel)
         }
         

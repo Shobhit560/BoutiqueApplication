@@ -114,8 +114,12 @@ class BroucherVC: UIViewController {
     @IBAction func btnHome(_ sender: Any) {
         let viewControllers: [UIViewController] = self.navigationController!.viewControllers
         for aViewController in viewControllers {
-            if aViewController is ViewController {
-                self.navigationController!.popToViewController(aViewController, animated: true)
+            if #available(iOS 10.0, *) {
+                if aViewController is ViewController {
+                    self.navigationController!.popToViewController(aViewController, animated: true)
+                }
+            } else {
+                // Fallback on earlier versions
             }
         }
     }

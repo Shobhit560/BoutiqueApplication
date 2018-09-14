@@ -1,6 +1,9 @@
 PODS:
   - Alamofire (4.7.2)
+  - Crashlytics (3.10.5):
+    - Fabric (~> 1.7.9)
   - CryptoSwift (0.10.0)
+  - Fabric (1.7.9)
   - IQKeyboardManagerSwift (6.0.4)
   - MBProgressHUD (1.0.0)
   - SDWebImage (4.4.1):
@@ -10,7 +13,9 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 4.7)
+  - Crashlytics
   - CryptoSwift
+  - Fabric
   - IQKeyboardManagerSwift
   - MBProgressHUD (~> 1.0.0)
   - SDWebImage (~> 4.0)
@@ -19,7 +24,9 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
+    - Crashlytics
     - CryptoSwift
+    - Fabric
     - IQKeyboardManagerSwift
     - MBProgressHUD
     - SDWebImage
@@ -27,12 +34,14 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
+  Crashlytics: 7f2e38d302d9da96475b3d64d86fb29e31a542b7
   CryptoSwift: 6c778d69282bed3b4e975ff97a79d074f20bb011
+  Fabric: a2917d3895e4c1569b9c3170de7320ea1b1e6661
   IQKeyboardManagerSwift: 36dbe324b4f9793f5f41ba5227f3e7c76dfefd50
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   SDWebImage: 47e9b5b925cbce75946c23f0c42dd19464189af4
   SwiftKeychainWrapper: 38952a3636320ae61bad3513cadd870929de7a4a
 
-PODFILE CHECKSUM: 500f4191589ec5422333b8315a16da6d673d8890
+PODFILE CHECKSUM: 549c4465f1994ce36d2a96e4bb39af33c2fc7011
 
 COCOAPODS: 1.5.2

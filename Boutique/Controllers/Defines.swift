@@ -25,6 +25,7 @@ let screenWidth = UIScreen.main.bounds.width
 let screenHeight = UIScreen.main.bounds.height
 let screen = UIScreen.main.bounds
 
+
 let kbaseURLDev =  "https://www.mypropertyboutique.com/"
 let kHomeBuyer = "mpbapi/home-buyer"
 let kleadCapture = "mpbapi/lead-capture"
@@ -97,7 +98,7 @@ enum ServiceUrls : String
 
 // MARK : GLOBAL Functions
 func println_debug <T> (_ object:T) {
-    print(object)
+//    print(object)
 }
 
 //MARK:- service keys
