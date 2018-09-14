@@ -108,7 +108,8 @@ class LocationVCViewController: UIViewController,UICollectionViewDelegate,UIColl
                     }
                     if ((response as! NSDictionary).value(forKey: "Status")) as! Int == 1{
                         DispatchQueue.main.async {
-                            self.pushDetailWebServiceLeadGenerate()
+                             self.methodToUploadImageOnServer()
+//                            self.pushDetailWebServiceLeadGenerate()
                         }
                     }else{
                         self.showErrorAlert(message: "Some Error Occured")
