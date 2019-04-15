@@ -63,7 +63,7 @@ class RegistrationVC: UIViewController,UIPopoverPresentationControllerDelegate,C
         super.viewDidLoad()
         imgProfile.image = dictDataFlow.value(forKey: "key_Image") as? UIImage
         viewFirst.addDashedBorder()
-        dataTest()
+//        dataTest()
     }
     
 
@@ -153,6 +153,9 @@ class RegistrationVC: UIViewController,UIPopoverPresentationControllerDelegate,C
                 txtMobile.text = ""
                 self.showErrorAlert(message: "Please enter valid Mobile Number")
             }
+        }
+        if textField == txtCompany{
+            txtCompany.text? = (textField.text?.capitalized)!
         }
         textField.resignFirstResponder()
     }

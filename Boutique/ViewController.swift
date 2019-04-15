@@ -32,7 +32,7 @@ class ViewController: UIViewController,ClassPopUpVCDelegate,UIPopoverPresentatio
     override func viewWillAppear(_ animated: Bool) {
         if dictDataFlow.count == 0{
             lblExpo.text = "Select Expo Center"
-            lblExecutive.text = "Executive Name"
+            lblExecutive.text = "Representative Name"
         }
     }
     
@@ -48,7 +48,7 @@ class ViewController: UIViewController,ClassPopUpVCDelegate,UIPopoverPresentatio
             boolDataAvailable = false
         }
         if (dictDataFlow.value(forKey: "key_Executive") == nil){
-            msg = msg + "\n" + "Executive Name"
+            msg = msg + "\n" + "Representative Name"
             boolDataAvailable = false
         }
         return (msg,boolDataAvailable)
@@ -56,8 +56,8 @@ class ViewController: UIViewController,ClassPopUpVCDelegate,UIPopoverPresentatio
     @IBAction func btnRegistration(_ sender: UIButton) {
         let (missingField, isValidated) = validateForm()
         if isValidated { DispatchQueue.main.async {
-//            let viewVC = ControllerFetcher().cameraVC
-            let viewVC = ControllerFetcher().registrationVC
+            let viewVC = ControllerFetcher().cameraVC
+//            let viewVC = ControllerFetcher().registrationVC
             self.navigationController?.pushViewController(viewVC, animated: true)
             }
         }else{
@@ -192,7 +192,7 @@ class ViewController: UIViewController,ClassPopUpVCDelegate,UIPopoverPresentatio
             case 1:
                 lblExpo.text = str
                 dictDataFlow.removeObject(forKey: "key_Executive")
-                lblExecutive.text = "Executive Name"
+                lblExecutive.text = "Representative Name"
                 selectedExpoID = selectedRow
                 dictDataFlow.removeObject(forKey: "key_Expo")
                 dictDataFlow.setValue(str, forKey: "key_Expo")
